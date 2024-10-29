@@ -1,0 +1,41 @@
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+platform :ios, '11.0'
+
+target 'hairdresser_vendor' do
+  config = use_native_modules!
+  rn_maps_path = '../node_modules/react-native-maps'
+  use_react_native!(:path => config["reactNativePath"])
+  pod 'Firebase/Analytics'
+  target 'hairdresser_vendorTests' do
+    inherit! :complete
+    # Pods for testing
+  end
+  post_install do |installer|
+    installer.pods_project.build_configurations.each do |config|
+      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+    end
+  end
+
+  # Enables Flipper.
+  #
+  # Note that if you have use_frameworks! enabled, Flipper will not work and
+  # you should disable these next few lines.
+  # use_flipper!
+  # post_install do |installer|
+  #   flipper_post_install(installer)
+  # end
+  pod 'react-native-google-maps', path: rn_maps_path  # Uncomment this line if you want to support GoogleMaps on iOS
+  pod 'GoogleMaps'  # Uncomment this line if you want to support GoogleMaps on iOS
+  pod 'Google-Maps-iOS-Utils' # Uncomment this line if you want to support GoogleMaps on iOS
+end
+
+target 'hairdresser_vendor-tvOS' do
+  # Pods for hairdresser_vendor-tvOS
+
+  target 'hairdresser_vendor-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+end
